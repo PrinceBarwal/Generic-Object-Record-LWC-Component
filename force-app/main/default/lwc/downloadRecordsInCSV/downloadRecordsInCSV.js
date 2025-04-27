@@ -12,6 +12,9 @@ export default class DownloadRecordsInCSV extends LightningElement {
 
     handleChange(event){
         this.searchKey = event.target.value;
+        if(this.searchKey === ''){
+            this.fieldList = [];
+        }
 
         if(this.searchKey.length > 1){
             getObjectInfo({searchKey : this.searchKey})

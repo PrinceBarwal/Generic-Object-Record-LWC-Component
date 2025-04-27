@@ -25,10 +25,12 @@
             <template if:true={fieldList}>
                 <div class="slds-m-top_medium">
                     <h3 class="slds-text-heading_small">Fields:</h3>
-                    <ul>
+                    <ul class="dropdown">
                         <template for:each={fieldList} for:item="field">
-                            <li key={field.fieldApiName}>
-                                <strong>{field.fieldLabel}</strong>
+                            <li 
+                                key={field.fieldApiName} 
+                                class="dropdown-item slds-p-around_small slds-border_bottom"
+                            ><strong>{field.fieldLabel}</strong>
                             </li>
                         </template>
                     </ul>
