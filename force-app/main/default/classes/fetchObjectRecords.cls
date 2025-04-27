@@ -30,7 +30,7 @@ public with sharing class fetchObjectRecords {
       }
       return matchingObjects;
     }
-    
+
     @AuraEnabled(cacheable=true)
     public static List<objectfieldInfo> getFieldInfo(String objectApiName){
       List<objectfieldInfo> fieldInfo = new List<objectfieldInfo>();
@@ -47,6 +47,30 @@ public with sharing class fetchObjectRecords {
         }
       }
       return fieldInfo;
+    }
+
+
+    @AuraEnabled(cacheable=true)
+    public static List<Map<String, Object>> getSObjectRecord(String objectApiName, List<String> fieldApiNames){
+      List<Map<String, Object>> recordsList = new List<Map<String, Object>>();
+
+    if (String.isNotBlank(objectApiName) && fieldApiNames != null && !fieldApiNames.isEmpty()) {
+        String fieldsQueryPart = String.join(fieldApiNames, ',');
+        String soql = 'SELECT ' + fieldsQueryPart + ' FROM ' + objectApiName + ' LIMIT 10';
+
+        List<sObject> sobjList = Database.query(soql);
+
+        for (SObject rec : sobjList) {
+            Map<String, Object> recordMap = new Map<String, Object>();
+            for (String fieldName : fieldApiNames) {
+                recordMap.put(fieldName, rec.get(fieldName));
+            }
+            recordsList.add(recordMap);
+        }
+    }
+
+    return recordsList;
+
     }
 
     public class objectfieldInfo{

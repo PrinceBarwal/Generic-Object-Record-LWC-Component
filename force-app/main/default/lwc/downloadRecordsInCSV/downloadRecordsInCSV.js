@@ -2,6 +2,7 @@ import { LightningElement } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import getObjectInfo from '@salesforce/apex/fetchObjectRecords.getObjectInfo';
 import getFieldInfo from '@salesforce/apex/fetchObjectRecords.getFieldInfo';
+import getSObjectRecord from '@salesforce/apex/fetchObjectRecords.getSObjectRecord';
 
 export default class DownloadRecordsInCSV extends LightningElement {
     searchKey = '';
@@ -89,7 +90,19 @@ export default class DownloadRecordsInCSV extends LightningElement {
     }
 
 
-    
+    get isDisabled(){
+        return this.selectedFields.length >= 1 ? false : true;
+    }
+
+    fetchRecordHandler(){
+        getSObjectRecord({objectApiName : this.selectedApiName, fieldApiNames : this.selectedFields})
+        .then(result => {
+            console.log('Record fetch successfully' , result);
+        })
+        .catch(error => {
+            console.log('Unable to Fetch the Records', error);
+        })
+    }
     showToast(title, message, variant) {
         const event = new ShowToastEvent({
             title: title,
