@@ -1,11 +1,13 @@
 import { LightningElement } from 'lwc';
 import getObjectInfo from '@salesforce/apex/fetchObjectRecords.getObjectInfo';
+import getFieldInfo from '@salesforce/apex/fetchObjectRecords.getFieldInfo';
 
 export default class DownloadRecordsInCSV extends LightningElement {
     searchKey = '';
     objectOptions = [];
     showDropdown = false;
     selectedApiName = '';
+    fieldList = [];
 
     handleChange(event){
         this.searchKey = event.target.value;
@@ -42,5 +44,18 @@ export default class DownloadRecordsInCSV extends LightningElement {
 
 
         this.showDropdown = false; 
+        this.fetchFieldsForSelectedObject();
+    }
+
+    fetchFieldsForSelectedObject(){
+        getFieldInfo({objectApiName : this.selectedApiName})
+        .then(result => {
+            this.fieldList = result;
+            console.log('Fields:', result);
+            console.log('Fields:', typeof(this.fieldList));
+        })
+        .catch(error => {
+            console.error('Error fetching fields', error);
+        })
     }
 }

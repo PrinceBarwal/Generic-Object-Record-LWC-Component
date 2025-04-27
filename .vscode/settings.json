@@ -4,5 +4,12 @@
     "**/bower_components": true,
     "**/.sfdx": true
   },
-  "salesforce.einsteinForDevelopers.enableAutocompletions": true
+  "salesforce.einsteinForDevelopers.enableAutocompletions": false,
+  "salesforce.einsteinForDevelopers.enable": false,
+  "salesforce.einsteinForDevelopers.enableAutocompletionsByFileType": {
+    "apex": false,
+    "javascript": true,
+    "css": true,
+    "html": true
+  }
 }

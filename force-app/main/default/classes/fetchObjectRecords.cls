@@ -30,6 +30,34 @@ public with sharing class fetchObjectRecords {
       }
       return matchingObjects;
     }
+    
+    @AuraEnabled(cacheable=true)
+    public static List<objectfieldInfo> getFieldInfo(String objectApiName){
+      List<objectfieldInfo> fieldInfo = new List<objectfieldInfo>();
+
+      if(Schema.getGlobalDescribe().containsKey(objectApiName)){
+        Schema.DescribeSObjectResult describeResult = Schema.getGlobalDescribe().get(objectApiName).getDescribe();
+        Map<String, Schema.SObjectField> fields = describeResult.fields.getMap();
+
+        for(Schema.SObjectField field  : fields.values()){
+          Schema.DescribeFieldResult fieldDescribe = field.getDescribe();
+          if(fieldDescribe.isAccessible()){
+            fieldInfo.add(new objectfieldInfo(fieldDescribe.getLabel(), fieldDescribe.getName()));
+          }
+        }
+      }
+      return fieldInfo;
+    }
+
+    public class objectfieldInfo{
+        @AuraEnabled public String fieldLabel {get; set;}
+        @AuraEnabled public String fieldApiName {get; set;}
+
+        public objectfieldInfo(String fieldLabel, string fieldApiName){
+          this.fieldLabel = fieldLabel;
+          this.fieldApiName = fieldApiName;
+        }
+    }
   
     public class ObjectInfo {
       @AuraEnabled public String label { get; set; }
