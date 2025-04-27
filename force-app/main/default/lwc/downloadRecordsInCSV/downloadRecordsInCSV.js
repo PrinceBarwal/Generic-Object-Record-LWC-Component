@@ -1,4 +1,5 @@
 import { LightningElement } from 'lwc';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import getObjectInfo from '@salesforce/apex/fetchObjectRecords.getObjectInfo';
 import getFieldInfo from '@salesforce/apex/fetchObjectRecords.getFieldInfo';
 
@@ -18,9 +19,16 @@ export default class DownloadRecordsInCSV extends LightningElement {
                 console.log('Result found of Object Name : ', result);
                 this.objectOptions = result;
                 this.showDropdown = result.length > 0;
+                setTimeout(() =>{
+                    if(result.length == 0){
+                        this.showToast('Error', 'Please Enter the Correct Object Name', 'error');
+                    }
+                }, 1000);
+                
             })
             .catch(error => { 
                 console.log('Unable to found the Object Name : ', error);
+                this.showToast('Error', 'Unable to find the object', 'error');
             })
         }
         else{
@@ -57,5 +65,14 @@ export default class DownloadRecordsInCSV extends LightningElement {
         .catch(error => {
             console.error('Error fetching fields', error);
         })
+    }
+
+    showToast(title, message, variant) {
+        const event = new ShowToastEvent({
+            title: title,
+            message: message,
+            variant : variant
+        });
+        this.dispatchEvent(event);
     }
 }
