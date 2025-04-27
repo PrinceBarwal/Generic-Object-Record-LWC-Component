@@ -1,0 +1,15 @@
+.dropdown {
+    max-height: 200px; /* Or 5 records height approx */
+    overflow-y: auto;
+    background: white;
+    border: 1px solid #d8dde6;
+    border-radius: 0.25rem;
+    position: absolute;
+    width: 100%;
+    z-index: 5;
+}
+
+.dropdown-item:hover {
+    background-color: #f3f6f9;
+    cursor: pointer;
+}

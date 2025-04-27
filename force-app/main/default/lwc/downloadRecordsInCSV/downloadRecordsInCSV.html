@@ -1,0 +1,26 @@
+<template>
+    <lightning-card title="Generic Data Download Component">
+        <!-- Object Input field -->
+        <div class="slds-p-around_small">
+            <lightning-input
+                label="Enter Object Name"
+                value={searchKey}
+                onchange={handleChange}
+                placeholder="Type to search object..."
+            ></lightning-input>
+
+            <template lwc:if={showDropdown}>
+                <ul class="dropdown slds-box slds-m-top_x-small">
+                    <template for:each={objectOptions} for:item="obj">
+                        <li 
+                            key={obj.apiName} 
+                            onclick={handleSelect}
+                            data-id={obj.apiName}
+                            class="dropdown-item slds-p-around_small slds-border_bottom"
+                        >{obj.label}</li>
+                    </template>
+                </ul>
+            </template>
+        </div>
+    </lightning-card>
+</template>
