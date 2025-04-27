@@ -1,18 +1,31 @@
-public class fetchObjectRecords {
+public with sharing class fetchObjectRecords {
     @AuraEnabled(cacheable=true)
     public static List<ObjectInfo> getObjectInfo(String searchKey) {
       List<ObjectInfo> matchingObjects = new List<ObjectInfo>();
   
       Map<String, Schema.SObjectType> gd = Schema.getGlobalDescribe();
   
-      for (Schema.SObjectType objType : gd.values()) {
-        Schema.DescribeSObjectResult describeResult = objType.getDescribe();
-        String label = describeResult.getLabel();
+      // for (Schema.SObjectType objType : gd.values()) {
+      //   Schema.DescribeSObjectResult describeResult = objType.getDescribe();
+      //   String label = describeResult.getLabel();
   
-        if (
-          label != null && label.toLowerCase().contains(searchKey.toLowerCase())
-        ) {
-          matchingObjects.add(new ObjectInfo(label, describeResult.getName()));
+      //   if (
+      //     label != null && label.toLowerCase().contains(searchKey.toLowerCase())
+      //   ) {
+      //     matchingObjects.add(new ObjectInfo(label, describeResult.getName()));
+      //   }
+      // }
+      for (Schema.SObjectType sObjType : gd.values()) {
+        Schema.DescribeSObjectResult describeResult = sObjType.getDescribe();
+
+        // Check if user has READ access
+        if (describeResult.isAccessible()) {
+
+            String label = describeResult.getLabel();
+
+            if (label != null && label.toLowerCase().contains(searchKey.toLowerCase())) {
+              matchingObjects.add(new ObjectInfo(label, describeResult.getName()));
+            }
         }
       }
       return matchingObjects;

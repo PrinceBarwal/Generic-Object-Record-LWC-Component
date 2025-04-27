@@ -38,7 +38,7 @@ export default class DownloadRecordsInCSV extends LightningElement {
         if (selectedObject) {
             this.searchKey = selectedObject.label; 
         }
-        console.log('Object Api Name after select 3 :', this.selectedApiName);
+        console.log('Object Api Name after select:', this.selectedApiName);
 
 
         this.showDropdown = false; 
