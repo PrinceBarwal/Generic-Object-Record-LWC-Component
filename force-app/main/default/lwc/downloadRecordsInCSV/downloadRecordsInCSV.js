@@ -9,6 +9,10 @@ export default class DownloadRecordsInCSV extends LightningElement {
     showDropdown = false;
     selectedApiName = '';
     fieldList = [];
+    // selectedFieldLabelNames = [];
+    // selectedFieldApiNames = [];
+
+    selectedFields = [];
 
     handleChange(event){
         this.searchKey = event.target.value;
@@ -70,6 +74,22 @@ export default class DownloadRecordsInCSV extends LightningElement {
         })
     }
 
+    handleFieldSelection(event){
+        const apiName = event.target.dataset.apiName;
+        console.log('Field api Name' , event.target.dataset.apiName);
+        if(event.target.checked){
+            if (!this.selectedFields.includes(apiName)) {
+                this.selectedFields = [...this.selectedFields, apiName];
+            }
+        }else {
+            this.selectedFields = this.selectedFields.filter(item => item !== apiName);
+        }
+
+        console.log('Selected Fields:', this.selectedFields);
+    }
+
+
+    
     showToast(title, message, variant) {
         const event = new ShowToastEvent({
             title: title,

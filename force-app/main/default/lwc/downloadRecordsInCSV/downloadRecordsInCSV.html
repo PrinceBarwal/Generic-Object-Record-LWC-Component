@@ -27,15 +27,30 @@
                     <h3 class="slds-text-heading_small">Fields:</h3>
                     <ul class="dropdown">
                         <template for:each={fieldList} for:item="field">
-                            <li 
+                            <!-- <li 
                                 key={field.fieldApiName} 
                                 class="dropdown-item slds-p-around_small slds-border_bottom"
+                                onclick={clickHandler}
                             ><strong>{field.fieldLabel}</strong>
-                            </li>
+                            </li> -->
+                            <div key={field.fieldApiName} class="slds-col slds-size_1-of-2 slds-p-around_x-small">
+                                <lightning-input
+                                    type="checkbox"
+                                    label={field.fieldLabel}
+                                    data-api-name={field.fieldApiName}
+                                    onchange={handleFieldSelection}>
+                                </lightning-input>
+                            </div>
                         </template>
                     </ul>
                 </div>
             </template>
+            <lightning-button
+                label="Fetch Record"
+                onclick={fetchRecordHandler}
+                disabled={isDisabled}
+                
+            ></lightning-button>
         </div>
     </lightning-card>
 </template>
